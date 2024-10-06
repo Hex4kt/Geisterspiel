@@ -15,11 +15,16 @@ namespace Geisterspiel
         {
             Console.WriteLine("Geisterspiel");
 
-            FrageStellen();
-
-            AntwortAufnehmen();
-
-            Thread.Sleep(10000);
+            while (true)
+            {
+                FrageStellen();
+                AntwortAufnehmen();
+                Console.WriteLine("Nochmal spielen? y / n");
+                if (Console.ReadLine() != "y")
+                {
+                    return;
+                }
+            }
         }
 
         static void FrageStellen()
@@ -31,21 +36,32 @@ namespace Geisterspiel
         static void AntwortAufnehmen()
         {
             int Tür;
-
+            int Punkte = 0;
             while (true)
             {
                 var Antwort = Console.ReadLine();
 
-                if (int.TryParse(Antwort, out Tür))
+                if (int.TryParse(Antwort, out Tür) && Tür == 1 | Tür == 2 | Tür == 3)
                 {
-                    if (Tür == 1 | Tür == 2 | Tür == 3)
+                    Punkte++;
+                    Random GeisterTür = new Random();
+                    if (GeisterTür.Next(1, 4) == Tür)
                     {
-                        Console.WriteLine("test");
+                        Console.WriteLine("Good Game! Hier ist ein Geist!");
+                        Console.WriteLine($"Deine Punkte: {Punkte}");
                         return;
                     }
+                    else
+                    {
+                        Console.WriteLine("Kein Geist gefunden!");
+                        FrageStellen();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Wähle eine Tür ... 1, 2 oder 3!");
                 }
             }
-        
         }
     }
 }
